@@ -1,7 +1,9 @@
 package jpabook.model.entity;
 
 import javax.persistence.*;
+import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
 
 @Entity
 @Table(name = "ORDERS")
@@ -11,14 +13,33 @@ public class Order {
     @GeneratedValue
     private Long id;
 
-    @Column(name = "MEMBER_ID")
-    private Long memberId;
+    @ManyToOne
+    @JoinColumn(name = "MEMBER_ID")
+    private Member member;
+
+    @OneToMany(mappedBy = "order")
+    private List<OrderItem> orderItems = new ArrayList<OrderItem>();
 
     @Temporal(TemporalType.TIMESTAMP)
     private Date orderDate;
 
     @Enumerated(EnumType.STRING)
     private OrderStatus status;
+
+    // relation
+    public void setMember(Member member) {
+        // remove old relation
+        if (this.member != null) {
+            this.member.getOrders().remove(this);
+        }
+        this.member = member;
+        member.getOrders().add(this);
+    }
+
+    public void addOrderItem(OrderItem orderItem) {
+        orderItems.add(orderItem);
+        orderItem.setOrder(this);
+    }
 
     // ----------------------------------------- getter, setter -----------------------------------------
 
@@ -31,12 +52,12 @@ public class Order {
         this.id = id;
     }
 
-    public Long getMemberId() {
-        return memberId;
+    public List<OrderItem> getOrderItems() {
+        return orderItems;
     }
 
-    public void setMemberId(Long memberId) {
-        this.memberId = memberId;
+    public void setOrderItems(List<OrderItem> orderItems) {
+        this.orderItems = orderItems;
     }
 
     public Date getOrderDate() {
@@ -53,5 +74,19 @@ public class Order {
 
     public void setStatus(OrderStatus status) {
         this.status = status;
+    }
+
+    public Member getMember() {
+        return member;
+    }
+
+
+    @Override
+    public String toString() {
+        return "Order{" +
+                "id=" + id +
+                ", orderDate=" + orderDate +
+                ", status=" + status +
+                '}';
     }
 }
