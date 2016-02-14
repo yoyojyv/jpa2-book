@@ -10,19 +10,18 @@ public class OrderItem {
     @Column(name = "ORDER_ITEM_ID")
     private Long id;
 
-    @Column(name = "ITEM_ID")
-    private Long itemId;
+    @ManyToOne
+    @JoinColumn(name = "ITEM_ID")
+    private Item item;      //주문 상품
 
-    @Column(name = "ORDER_ID")
-    private Long orderId;
+    @ManyToOne
+    @JoinColumn(name = "ORDER_ID")
+    private Order order;    //주문
 
-    private int orderPrice;
-
-    private int count;
+    private int orderPrice; //주문 가격
+    private int count;      //주문 수량
 
     // ----------------------------------------- getter, setter -----------------------------------------
-
-
     public Long getId() {
         return id;
     }
@@ -31,28 +30,28 @@ public class OrderItem {
         this.id = id;
     }
 
-    public Long getItemId() {
-        return itemId;
+    public Item getItem() {
+        return item;
     }
 
-    public void setItemId(Long itemId) {
-        this.itemId = itemId;
+    public void setItem(Item item) {
+        this.item = item;
     }
 
-    public Long getOrderId() {
-        return orderId;
+    public Order getOrder() {
+        return order;
     }
 
-    public void setOrderId(Long orderId) {
-        this.orderId = orderId;
+    public void setOrder(Order order) {
+        this.order = order;
     }
 
     public int getOrderPrice() {
         return orderPrice;
     }
 
-    public void setOrderPrice(int orderPrice) {
-        this.orderPrice = orderPrice;
+    public void setOrderPrice(int buyPrice) {
+        this.orderPrice = buyPrice;
     }
 
     public int getCount() {
@@ -61,5 +60,14 @@ public class OrderItem {
 
     public void setCount(int count) {
         this.count = count;
+    }
+
+    @Override
+    public String toString() {
+        return "OrderItem{" +
+                "id=" + id +
+                ", buyPrice=" + orderPrice +
+                ", count=" + count +
+                '}';
     }
 }

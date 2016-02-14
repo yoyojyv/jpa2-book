@@ -1,6 +1,8 @@
 package jpabook.model.entity;
 
 import javax.persistence.*;
+import java.util.ArrayList;
+import java.util.List;
 
 @Entity
 public class Item {
@@ -10,11 +12,15 @@ public class Item {
     @Column(name = "ITEM_ID")
     private Long id;
 
-    private String name;
+    private String name; //이름
 
-    private int price;
+    private int price;  //가격
 
-    private int stockQuantity;
+    private int stockQuantity;  //재고수량
+
+    @ManyToMany(mappedBy = "items")                         //**
+    private List<Category> categories = new ArrayList<Category>(); //**
+
 
     // ----------------------------------------- getter, setter -----------------------------------------
 
@@ -48,5 +54,22 @@ public class Item {
 
     public void setStockQuantity(int stockQuantity) {
         this.stockQuantity = stockQuantity;
+    }
+
+    public List<Category> getCategories() {
+        return categories;
+    }
+
+    public void setCategories(List<Category> categories) {
+        this.categories = categories;
+    }
+
+    @Override
+    public String toString() {
+        return "Item{" +
+                "id=" + id +
+                ", name='" + name + '\'' +
+                ", price=" + price +
+                '}';
     }
 }

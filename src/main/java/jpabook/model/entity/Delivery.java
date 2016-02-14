@@ -1,30 +1,26 @@
 package jpabook.model.entity;
 
 import javax.persistence.*;
-import java.util.ArrayList;
-import java.util.List;
 
 @Entity
-@Table(name = "MEMBER")
-public class Member {
-
-    @Id @GeneratedValue
-    @Column(name = "MEMBER_ID")
+public class Delivery {
+    @Id
+    @GeneratedValue
+    @Column(name = "DELIVERY_ID")
     private Long id;
 
-    private String name;
+    @OneToOne(mappedBy = "delivery")
+    private Order order;
 
     private String city;
-
     private String street;
-
     private String zipcode;
 
-    @OneToMany(mappedBy = "member")
-    private List<Order> orders = new ArrayList<Order>();
+    @Enumerated(EnumType.STRING)
+    private DeliveryStatus status; //ENUM [READY(준비), COMP(배송)]
 
-    // ----------------------------------------- getter, setter -----------------------------------------
 
+    //Getter, Setter
     public Long getId() {
         return id;
     }
@@ -33,12 +29,12 @@ public class Member {
         this.id = id;
     }
 
-    public String getName() {
-        return name;
+    public Order getOrder() {
+        return order;
     }
 
-    public void setName(String name) {
-        this.name = name;
+    public void setOrder(Order order) {
+        this.order = order;
     }
 
     public String getCity() {
@@ -65,11 +61,11 @@ public class Member {
         this.zipcode = zipcode;
     }
 
-    public List<Order> getOrders() {
-        return orders;
+    public DeliveryStatus getStatus() {
+        return status;
     }
 
-    public void setOrders(List<Order> orders) {
-        this.orders = orders;
+    public void setStatus(DeliveryStatus status) {
+        this.status = status;
     }
 }
